@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/new.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -46,6 +47,7 @@
                             <li><a href="{{ route('login') }}">Sign In</a></li>
                             <li><a href="{{ route('register') }}">Sign Up</a></li>
                         @else
+                            <li><a href="{{ url('post/create') }}">Add new post</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>

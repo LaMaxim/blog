@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAssociatingRoleUserTable extends Migration
+class CreateAssociatingPostUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,16 +14,16 @@ class CreateAssociatingRoleUserTable extends Migration
     public function up()
     {
         // Create table for associating roles to users (Many-to-Many)
-        Schema::create('role_user', function (Blueprint $table) {
-            $table->integer('role_id')->unsigned();
+        Schema::create('post_user', function (Blueprint $table) {
+            $table->integer('post_id')->unsigned();
             $table->integer('user_id')->unsigned();
 
-            $table->foreign('role_id')->references('id')->on('roles')
+            $table->foreign('post_id')->references('id')->on('posts')
                 ->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')
                 ->onUpdate('cascade')->onDelete('cascade');
 
-            $table->primary(['role_id', 'user_id']);
+            $table->primary(['post_id', 'user_id']);
         });
     }
 
@@ -34,6 +34,6 @@ class CreateAssociatingRoleUserTable extends Migration
      */
     public function down()
     {
-        Schema::drop('role_user');
+        Schema::dropIfExists('post_user');
     }
 }
