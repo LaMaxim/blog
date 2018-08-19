@@ -1,0 +1,44 @@
+.father-div {
+    border-radius: 10px;
+    border: 1px solid rgb(207,224,232);
+    background-color: rgb(255,255,255);
+    margin-bottom: 10px;
+    padding: 12px;
+    min-height: 240px;
+}
+.height-div {
+    min-height: 440px;
+}
+.father-left-img {
+    float:left;
+    margin: 8px 8px 8px 0;
+    max-width: 100px
+}
+.show-left-img {
+    float:left;
+    margin: 8px 8px 8px 0;
+    max-width: 150px
+}
+.edit-img {
+    max-width: 80px;
+    padding: 10px;
+}
+.father-link {
+    text-align: right;
+    padding-right: 10px;
+}
+.float-left {
+    float: left;
+}
+.form-div {
+    padding: 15px 0;
+}
+.control-buttons {
+    float: right;
+    margin: 0 10px;
+
+}
+.control-div {
+    margin-top: 10px;
+    text-align: right;
+}

@@ -11,19 +11,19 @@
 |
 */
 
-//    Route::get('/', function () {
-//        return view('welcome');
-//    });
-//
-//    Auth::routes();
-//
-//    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/post/view/{post}', 'PostController@show')->name('post.show');
 
+    Route::group(['middleware' => 'auth'], function () {
 
-//    Route::get('/', function () {
-//        return view('welcome');
-//    });
+//        Route::resource('post', 'PostController');
+        Route::post('/post', 'PostController@store')->name('post.store');
+        Route::get('/post/create', 'PostController@create')->name('post.create');
+        Route::put('/post/{post}', 'PostController@update')->name('post.update');
+        Route::get('/post/edit/{post}', 'PostController@edit')->name('post.edit');
+        Route::delete('/post/{post}', 'PostController@destroy')->name('post.destroy');
+    });
 
     Auth::routes();
 
-    Route::get('/', 'HomeController@index')->name('home');
+
