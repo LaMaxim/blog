@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comment;
 use App\Post;
 use App\User;
 use Illuminate\Support\Facades\Auth;
@@ -81,9 +82,10 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param $id
+     * @param PostService $postService
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, $id, PostService $postService)
     {
@@ -117,5 +119,33 @@ class PostController extends Controller
         $service->deleteImage($imageName);
 
         return redirect()->route('home');
+    }
+
+    /**
+     * Create comment
+     *
+     * @param Request $request
+     * @param PostService $postService
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function createComment(Request $request, PostService $postService)
+    {
+        $comment = $postService->createComments($request);
+
+        return response()->json($comment);
+    }
+
+    /**
+     * Delete comment
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteComment($id)
+    {
+        $comment = Comment::find($id);
+        $comment->delete();
+
+        return response('success', 200);
     }
 }

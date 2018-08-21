@@ -36,9 +36,37 @@
 .control-buttons {
     float: right;
     margin: 0 10px;
-
 }
 .control-div {
     margin-top: 10px;
     text-align: right;
+}
+#form textarea {
+    width: 100%;
+    max-width: 500px;
+    height: 100px;
+}
+#send-comment {
+    margin-top: 10px;
+}
+#form button {
+    width: 100%;
+    max-width: 500px;
+}
+.comment {
+    margin: 10px 0 10px 0;
+    border: 1px solid #a9a9a9;
+    width: 100%;
+    max-width: 500px;
+}
+.comment .user {
+    padding: 5px;
+    font-size: 12px;
+    text-align: right;
+}
+.comment .comment-value {
+    padding: 5px
+}
+.option-btn-container {
+    padding: 5px;
 }
