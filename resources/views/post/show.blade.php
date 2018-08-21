@@ -1,12 +1,7 @@
 @extends('layouts.app')
 
-@section('page_js')
-    <script src="{{asset('js/vue' . (env('APP_ENV') !== 'local' ? '.min' : '') . '.js' )}}"></script>
-    <script src="{{asset('js/comments/comments.js')}}"></script>
-@endsection
-
 @section('content')
-    @include('messages.msg')
+@include('messages.msg')
 <div class="container">
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
@@ -41,25 +36,57 @@
 
                 </div>
 
-                <div class="panel-body">
-
+                <div class="panel-body" style="display: none">
                     <div>
                         @foreach($post->comments as $comment)
-                            <div>
-                                {{$comment->text}}
-                                {{$comment->user->name}}
-                            </div>
+                            {{$comment->user}}
+                            {{$comment->user->roles}}
                         @endforeach
                     </div>
-
                 </div>
-                <div id="comments-container">
-                    <div>
-                        {{--{{message}}--}}
+            @verbatim
+                <div class="col-md-10 col-md-offset-2" id="comments-container">
+                    <div id="form" v-if="currentUser">
+                        <div id="comment-form">
+                            <textarea v-model="value" placeholder="Enter your comment"></textarea>
+                        </div>
+                        <div id="send-comment">
+                            <button class="btn btn-primary" @click="clickSendComment">Send</button>
+                        </div>
+                    </div>
+                    <div id="comment-list">
+                        <div v-for="comment in comments">
+                            <div class="comment">
+                                <div class="user">
+                                    <span>{{getCreatedAtCommentText(comment.created_at)}}</span>
+                                    <span>{{comment.user.name}}</span>
+                                </div>
+                                <div class="comment-value">
+                                    <span>{{comment.text}}</span>
+                                </div>
+                                <div v-if="currentUser && currentUser.roles[0].name === EDITOR_ROLE" class="option-btn-container">
+                                    <button class="btn btn-default btn-xs" @click="clickEditComment(comment.id)">Edit</button>
+                                    <button class="btn btn-danger btn-xs" @click="clickDeleteComment(comment.id)">Delete</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
+            @endverbatim
         </div>
     </div>
 </div>
+
+@if(isset($post->comments))
+    <script>window._globals = {!! json_encode([
+    'comments' => $post->comments,
+    'currentUser' => \Illuminate\Support\Facades\Auth::user(),
+    'currentPostId' => $post->id
+    ]) !!}</script>
+@endif
+<script src="{{ asset('js/axios.min.js') }}"></script>
+<script src="{{ asset('js/moment.min.js') }}"></script>
+<script src="{{asset('js/vue' . (env('APP_ENV') !== 'local' ? '.min' : '') . '.js' )}}"></script>
+<script src="{{ asset('js/comments/comments.js') }}"></script>
+
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Post;
+use App\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -70,5 +71,22 @@ class PostService
         }
 
         return $post->id;
+    }
+
+    /**
+     * Create comment
+     *
+     * @param Request $request
+     * @return Comment
+     */
+    public function createComments (Request $request)
+    {
+        $comment = new Comment();
+        $comment->text = $request->comment;
+        $comment->user_id = $request->userId;
+        $comment->post_id = $request->postId;
+        $comment->save();
+
+        return $comment;
     }
 }

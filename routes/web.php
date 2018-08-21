@@ -15,13 +15,13 @@
     Route::get('/post/view/{post}', 'PostController@show')->name('post.show');
 
     Route::group(['middleware' => 'auth'], function () {
-
-//        Route::resource('post', 'PostController');
         Route::post('/post', 'PostController@store')->name('post.store');
         Route::get('/post/create', 'PostController@create')->name('post.create');
         Route::put('/post/{post}', 'PostController@update')->name('post.update');
         Route::get('/post/edit/{post}', 'PostController@edit')->name('post.edit');
         Route::delete('/post/{post}', 'PostController@destroy')->name('post.destroy');
+        Route::post('/post/create-comment', 'PostController@createComment');
+        Route::delete('/post/delete-comment/{id}', 'PostController@deleteComment');
     });
 
     Auth::routes();
