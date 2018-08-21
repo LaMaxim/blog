@@ -99,22 +99,18 @@
                 const elementFormContainerId = 'edit-form-' + commentId;
                 const elementTextCommentId = 'text-comment-' + commentId;
                 const elementOptionPanelBtnCommentId = 'option-btn-container-' + commentId;
-                // const elementOptionPanelBtnCommentId = 'option-edit-panel-' + commentId;
                 document.getElementById(elementTextCommentId).style.display = 'none';
                 document.getElementById(elementFormContainerId).style.display = 'block';
                 document.getElementById(elementOptionPanelBtnCommentId).style.display = 'none';
-
             },
 
     disableEditMode(commentId) {
         const elementFormContainerId = 'edit-form-' + commentId;
         const elementTextCommentId = 'text-comment-' + commentId;
         const elementOptionPanelBtnCommentId = 'option-btn-container-' + commentId;
-        // const elementOptionPanelBtnCommentId = 'option-edit-panel-' + commentId;
         document.getElementById(elementTextCommentId).style.display = 'block';
         document.getElementById(elementFormContainerId).style.display = 'none';
         document.getElementById(elementOptionPanelBtnCommentId).style.display = 'block';
-
     },
 
     cleanFormValue: function() {
