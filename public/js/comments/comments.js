@@ -1,5 +1,4 @@
 ;(function (Vue, Moment, Axios, G) {
-    console.log(G.currentUser);
     let app = new Vue({
         el: '#comments-container',
         data: {
@@ -21,47 +20,106 @@
             },
 
             clickEditComment: function (commentId) {
-                this.editCommentFromServer(commentId, commentValue);
+                this.enableEditMode(commentId);
+            },
+
+            clickCloseEditComment: function(commentId) {
+                this.disableEditMode(commentId);
             },
 
             clickDeleteComment: function (commentId) {
                 this.deleteCommentFromServer(commentId)
             },
 
+            clickSendEditComment: function(commentId) {
+                const editTextareaCommentElement = document.getElementById('edit-textarea-comment-' + commentId);
+                const text = editTextareaCommentElement.value;
+                this.sendEditCommentToServer(commentId, text);
+            },
+
             sendCommentToServer: function () {
-                const self = this;
+                const successResp = function(response) {
+                    response.data['user'] = this.currentUser;
+                    this.comments.push(response.data);
+                    this.cleanFormValue();
+                }.bind(this);
+                const errorResp = function(error) {
+                    console.log('Error send comment to server', error);
+                };
+
                 Axios.post('/post/create-comment', {
                     comment: this.value,
                     userId: this.currentUser.id,
                     postId: this.currentPostId
-                }).then(function(response) {
-                    response.data['user'] = self.currentUser;
-                    self.comments.push(response.data);
-                    self.cleanFormValue();
-                }).catch(function(error) {
-                    console.log('Error send comment to server', error);
                 })
+                    .then(successResp)
+                    .catch(errorResp);
             },
 
             deleteCommentFromServer: function (commentId) {
-                const self = this;
-                Axios.delete('/post/delete-comment/' + commentId).then(function(response) {
-                    const cleanCommentList = self.comments.filter(function(comment) {
-                       return commentId !== comment.id
+                const successResp = function(response) {
+                    const cleanCommentList = this.comments.filter(function(comment) {
+                        return commentId !== comment.id
                     });
-                    self.comments = cleanCommentList;
-                }).catch(function(error) {
+                    this.comments = cleanCommentList;
+                }.bind(this);
+                const errorResp = function(error) {
                     console.log('Error delete comment from server', error);
+                };
+
+                Axios.delete('/post/delete-comment/' + commentId)
+                    .then(successResp)
+                    .catch(errorResp)
+            },
+
+            sendEditCommentToServer: function (commentId, text) {
+                const successResp = function(response) {
+                    const cleanCommentList = this.comments.map(function(comment) {
+                        if (comment.id === commentId) {
+                            comment.text = text;
+                        }
+                        return comment;
+                    });
+                    this.comments = cleanCommentList;
+                }.bind(this);
+                const errorResp = function(error) {
+                    console.log('Error send edited comment to server', error);
+                };
+
+                Axios.post('/post/edit-comment', {
+                    id: commentId,
+                    text: text
                 })
+                    .then(successResp)
+                    this.disableEditMode(commentId)
+                    .catch(errorResp);
             },
 
-            editCommentFromServer: function (commentId, commentValue) {
+            enableEditMode(commentId) {
+                const elementFormContainerId = 'edit-form-' + commentId;
+                const elementTextCommentId = 'text-comment-' + commentId;
+                const elementOptionPanelBtnCommentId = 'option-btn-container-' + commentId;
+                // const elementOptionPanelBtnCommentId = 'option-edit-panel-' + commentId;
+                document.getElementById(elementTextCommentId).style.display = 'none';
+                document.getElementById(elementFormContainerId).style.display = 'block';
+                document.getElementById(elementOptionPanelBtnCommentId).style.display = 'none';
 
             },
 
-            cleanFormValue: function() {
-                this.value = '';
-            }
-        }
-    })
+    disableEditMode(commentId) {
+        const elementFormContainerId = 'edit-form-' + commentId;
+        const elementTextCommentId = 'text-comment-' + commentId;
+        const elementOptionPanelBtnCommentId = 'option-btn-container-' + commentId;
+        // const elementOptionPanelBtnCommentId = 'option-edit-panel-' + commentId;
+        document.getElementById(elementTextCommentId).style.display = 'block';
+        document.getElementById(elementFormContainerId).style.display = 'none';
+        document.getElementById(elementOptionPanelBtnCommentId).style.display = 'block';
+
+    },
+
+    cleanFormValue: function() {
+        this.value = '';
+    }
+}
+})
 })(Vue, moment, axios, window._globals || {});
