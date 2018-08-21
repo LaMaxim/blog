@@ -148,4 +148,19 @@ class PostController extends Controller
 
         return response('success', 200);
     }
+
+    /**
+     * Edit comment
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function editComment(Request $request)
+    {
+        $comment = Comment::find($request->id);
+        $comment->text = $request->text;
+        $comment->save();
+
+        return response()->json($comment);
+    }
 }

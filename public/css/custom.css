@@ -70,3 +70,6 @@
 .option-btn-container {
     padding: 5px;
 }
+.edit-form {
+    display: none;
+}

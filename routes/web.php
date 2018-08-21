@@ -21,6 +21,7 @@
         Route::get('/post/edit/{post}', 'PostController@edit')->name('post.edit');
         Route::delete('/post/{post}', 'PostController@destroy')->name('post.destroy');
         Route::post('/post/create-comment', 'PostController@createComment');
+        Route::post('/post/edit-comment', 'PostController@editComment');
         Route::delete('/post/delete-comment/{id}', 'PostController@deleteComment');
     });
 
